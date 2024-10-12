@@ -9,6 +9,20 @@ buildscript {
         kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.23'
 
         ndkVersion = "26.1.10909125"
+        
+
+        set('react-native', [
+           versions: [
+             android : [
+               minSdk: 23,
+               targetSdk: 33,
+               compileSdk: 34,
+             ],
+             firebase: [
+               bom: "33.3.0"
+             ],
+           ],
+         ])
     }
     repositories {
         google()
