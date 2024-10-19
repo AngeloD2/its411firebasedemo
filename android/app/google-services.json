@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "446096339855",
+    "project_id": "its411-firebase-demo",
+    "storage_bucket": "its411-firebase-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446096339855:android:0d8673f1e71ea7291651fa",
+        "android_client_info": {
+          "package_name": "com.angelod2.firebasedemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvwbnoJp3c6dkfNf3SwF96k04vsSgKW-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
