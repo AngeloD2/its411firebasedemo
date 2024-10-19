@@ -13,15 +13,17 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.angelod2.firebasedemo"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.angelod2.firebasedemo",
+      "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.angelod2.firebasedemo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.angelod2.firebasedemo"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +31,10 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics"
     ],
     "experiments": {
       "typedRoutes": true

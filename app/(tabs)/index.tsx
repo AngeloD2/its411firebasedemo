@@ -1,64 +1,110 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, TextInput, Text, Button } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
+import { createUser1 } from '@/firebase/auth';
+import { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ThemedView';
-
+import { ThemedText } from '@/components/ThemedText';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 export default function HomeScreen() {
+
+  const [email, setEmail] = useState<string | null>('');
+  const [password, setPassword] = useState<string | null>('');
+
+  const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<FirebaseAuthTypes.User>();
+
+  async function handleRegisterUser() {
+    if (!email || password) {
+      setError("Email or Password cannot be empty!")
+      return;
+    }
+
+    try {
+      const payload = { creds: { email, password } }
+
+      const res = await createUser1(payload)
+      
+      if (!res) {
+        setError('User creation error');
+        return;
+      }
+
+      setUser(res)
+    } catch (e) {
+      console.error(e)
+    }
+
+
+  }
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError(null)
+      }, 3000)
+    }
+  }, [error])
+
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
+    <ThemedView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+        <ThemedText style={styles.title}> Register with Firebase </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
+
+      <ThemedView style={styles.inputContainer}>
+        <ThemedText> Email </ThemedText>
+        <TextInput style={styles.input} value={email ? email : ''} onChangeText={setEmail} />
+
+        <ThemedText> Password </ThemedText>
+        <TextInput style={styles.input} secureTextEntry value={password ? password : ''} onChangeText={setPassword} />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
+
+      <ThemedView style={styles.btnContainer}>
+        <Button title='Register' onPress={() => handleRegisterUser()} />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+      <ThemedView>
+        {user ?
+          <ThemedText>
+            {user.email}
+            {user.displayName}
+          </ThemedText>
+          :
+          null
+        }
       </ThemedView>
-    </ParallaxScrollView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    margin: 24,
+  },
   titleContainer: {
+    backgroundColor: 'orange',
+    borderRadius: 12,
+    padding: 8,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
+  title: {
+
+  },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  inputContainer: {
+    marginHorizontal: 100,
+    rowGap: 8,
+  },
+  input: {
+    borderWidth: 0.5,
+    borderRadius: 8,
+    padding: 4,
+    width: 180,
   },
   reactLogo: {
     height: 178,
