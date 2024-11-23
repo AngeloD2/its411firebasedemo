@@ -44,15 +44,14 @@ export async function createUser1({ creds }: { creds: { email: string | null, pa
     }
 
     try {
-        const res = auth().createUserWithEmailAndPassword(creds.email as string, creds.password as string);
+        const res = await auth().createUserWithEmailAndPassword(creds.email as string, creds.password as string);
 
-        const data = await res
-        if (!data.user) {
+        if (!res.user) {
             console.error('Unable to create user');
         }
 
-        console.log("User created: ", data.user)
-        return data.user;
+        console.log("User created: ", res.user)
+        return res.user;
     } catch (e) {
         console.error(e)
     }
